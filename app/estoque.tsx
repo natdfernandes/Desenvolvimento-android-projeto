@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import {
     Alert,
     FlatList,
+    Platform,
     ScrollView,
     StyleSheet,
     Text,
@@ -55,15 +56,22 @@ export default function EstoqueScreen() {
     };
 
     const handleDeleteProduto = (id: string) => {
+        const mensagem = 'Deseja realmente excluir este produto?';
+        if (Platform.OS === 'web') {
+            if (window.confirm(mensagem)) {
+                removerProduto(id);
+            }
+            return;
+        }
         Alert.alert(
             'Confirmar exclusão',
-            'Deseja realmente excluir este produto?',
+            mensagem,
             [
                 { text: 'Cancelar', style: 'cancel' },
                 {
                     text: 'Excluir',
                     onPress: () => {
-                        setProdutos(produtos.filter(p => p.id !== id));
+                        removerProduto(id);
                     },
                     style: 'destructive',
                 },
@@ -90,7 +98,7 @@ export default function EstoqueScreen() {
                     style={styles.botaoDeletar}
                     onPress={() => handleDeleteProduto(item.id)}
                 >
-                    <FontAwesome name="trash" size={16} color="#0000" />
+                    <FontAwesome name="trash" size={16} color="#000000" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -159,6 +167,10 @@ export default function EstoqueScreen() {
             </View>
         </ScrollView>
     );
+
+    function removerProduto(id: string) {
+        setProdutos(produtos.filter(p => p.id !== id));
+    }
 }
 
 const styles = StyleSheet.create({
