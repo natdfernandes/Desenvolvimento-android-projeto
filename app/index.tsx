@@ -83,13 +83,6 @@ export default function LoginScreen() {
             >
                 <Text style={styles.loginButtonText}>ENTRAR</Text>
             </TouchableOpacity>
-
-            {/* Footer */}
-            <View style={styles.footer}>
-                <Text style={styles.footerText}>
-                    Desenvolvido por: Natalia Dias Fernandes 2026 ®
-                </Text>
-            </View>
         </ScrollView>
     );
 }
@@ -191,18 +184,6 @@ const styles = StyleSheet.create({
         color: '#FAFAFA',
         fontSize: 16,
         fontWeight: '600',
-        textAlign: 'center',
-    },
-
-    // Footer
-    footer: {
-        width: '100%',
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    footerText: {
-        color: '#0284C7',
-        fontSize: 12,
         textAlign: 'center',
     },
 });
