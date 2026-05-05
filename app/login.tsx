@@ -1,5 +1,6 @@
 import { Checkbox } from "expo-checkbox";
 import { Image as ExpoImage } from 'expo-image';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
     ScrollView,
@@ -11,6 +12,7 @@ import {
 } from 'react-native';
 
 export default function LoginScreen() {
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberPassword, setRememberPassword] = useState(false);
@@ -20,6 +22,7 @@ export default function LoginScreen() {
         console.log('Email:', email);
         console.log('Password:', password);
         console.log('Remember:', rememberPassword);
+        router.push('/estoque');
     };
 
     return (
