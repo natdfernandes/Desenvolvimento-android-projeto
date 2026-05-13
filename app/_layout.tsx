@@ -18,6 +18,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="estoque" options={{ headerShown: false }} />
+        <Stack.Screen name="tarefas" options={{ headerShown: false }} />
       </Stack>
       <Footer />
       <StatusBar style="auto" />

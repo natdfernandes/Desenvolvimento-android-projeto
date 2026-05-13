@@ -1,3 +1,4 @@
+import Navbar from '@/components/ui/Navbar';
 import { FontAwesome } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
@@ -25,7 +26,6 @@ export default function EstoqueScreen() {
     ]);
     const [nomeProduto, setNomeProduto] = useState('');
     const [editingId, setEditingId] = useState<string | null>(null);
-    const [editingNome, setEditingNome] = useState('');
 
     const handleAddProduto = () => {
         if (nomeProduto.trim() === '') {
@@ -138,70 +138,77 @@ export default function EstoqueScreen() {
         </View>
     );
 
-    return (
-        <ScrollView
-            contentContainerStyle={styles.container}
-            showsVerticalScrollIndicator={false}
-        >
-            {/* Header Container */}
-            <View style={styles.headerContainer}>
-                <Text style={styles.header}>Estoque</Text>
-            </View>
-
-            {/* Form Container */}
-            <View style={styles.formContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Cadastrar produto"
-                    placeholderTextColor="#A3A3A3"
-                    value={nomeProduto}
-                    onChangeText={setNomeProduto}
-                />
-                <TouchableOpacity
-                    style={styles.cadastrarButton}
-                    onPress={handleAddProduto}
-                >
-                    <Text style={styles.cadastrarButtonText}>
-                        {editingId ? 'Atualizar' : 'Cadastrar'}
-                    </Text>
-                </TouchableOpacity>
-            </View>
-
-            {/* Botão de Cancelar (aparece apenas em modo de edição) */}
-            {editingId && (
-                <TouchableOpacity
-                    style={styles.cancelButton}
-                    onPress={handleCancelEdit}
-                >
-                    <Text style={styles.cancelButtonText}>Cancelar</Text>
-                </TouchableOpacity>
-            )}
-
-            {/* Lista de Produtos */}
-            <View style={styles.listContainer}>
-                <Text style={styles.listTitle}>Produtos Cadastrados</Text>
-                {produtos.length > 0 ? (
-                    <FlatList
-                        data={produtos}
-                        renderItem={renderProduto}
-                        keyExtractor={item => item.id}
-                        scrollEnabled={false}
-                        ItemSeparatorComponent={() => <View style={styles.separator} />}
-                    />
-                ) : (
-                    <Text style={styles.emptyMessage}>Nenhum produto cadastrado</Text>
-                )}
-            </View>
-        </ScrollView>
-    );
-
-    function removerProduto(id: string) {
+    const removerProduto = (id: string) => {
         setProdutos(produtos.filter(p => p.id !== id));
-    }
+    };
+
+    return (
+        <View style={styles.container}>
+            <Navbar />
+            <ScrollView
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={false}
+            >
+                {/* Header Container */}
+                <View style={styles.headerContainer}>
+                    <Text style={styles.header}>Estoque</Text>
+                </View>
+
+                {/* Form Container */}
+                <View style={styles.formContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Cadastrar produto"
+                        placeholderTextColor="#A3A3A3"
+                        value={nomeProduto}
+                        onChangeText={setNomeProduto}
+                    />
+                    <TouchableOpacity
+                        style={styles.cadastrarButton}
+                        onPress={handleAddProduto}
+                    >
+                        <Text style={styles.cadastrarButtonText}>
+                            {editingId ? 'Atualizar' : 'Cadastrar'}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
+                {/* Botão de Cancelar (aparece apenas em modo de edição) */}
+                {editingId && (
+                    <TouchableOpacity
+                        style={styles.cancelButton}
+                        onPress={handleCancelEdit}
+                    >
+                        <Text style={styles.cancelButtonText}>Cancelar</Text>
+                    </TouchableOpacity>
+                )}
+
+                {/* Lista de Produtos */}
+                <View style={styles.listContainer}>
+                    <Text style={styles.listTitle}>Produtos Cadastrados</Text>
+                    {produtos.length > 0 ? (
+                        <FlatList
+                            data={produtos}
+                            renderItem={renderProduto}
+                            keyExtractor={item => item.id}
+                            scrollEnabled={false}
+                            ItemSeparatorComponent={() => <View style={styles.separator} />}
+                        />
+                    ) : (
+                        <Text style={styles.emptyMessage}>Nenhum produto cadastrado</Text>
+                    )}
+                </View>
+            </ScrollView>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        backgroundColor: '#FAFAFA',
+    },
+    scrollContent: {
         flexGrow: 1,
         gap: 24,
         paddingHorizontal: 24,
