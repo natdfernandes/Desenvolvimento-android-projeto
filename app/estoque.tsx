@@ -15,12 +15,13 @@ import {
 interface Produto {
     id: string;
     nome: string;
+    quantidade: number;
 }
 
 export default function EstoqueScreen() {
     const [produtos, setProdutos] = useState<Produto[]>([
-        { id: '1', nome: 'Arroz' },
-        { id: '2', nome: 'Feijão' },
+        { id: '1', nome: 'Arroz', quantidade: 1 },
+        { id: '2', nome: 'Feijão', quantidade: 1 },
     ]);
     const [nomeProduto, setNomeProduto] = useState('');
     const [editingId, setEditingId] = useState<string | null>(null);
@@ -44,6 +45,7 @@ export default function EstoqueScreen() {
             const newProduto: Produto = {
                 id: Date.now().toString(),
                 nome: nomeProduto,
+                quantidade: 1,
             };
             setProdutos([...produtos, newProduto]);
             setNomeProduto('');
@@ -84,9 +86,41 @@ export default function EstoqueScreen() {
         setNomeProduto('');
     };
 
+    const handleIncreaseQuantidade = (id: string) => {
+        setProdutos(produtos.map(p =>
+            p.id === id ? { ...p, quantidade: p.quantidade + 1 } : p
+        ));
+    };
+
+    const handleDecreaseQuantidade = (id: string) => {
+        setProdutos(produtos.map(p => {
+            if (p.id === id && p.quantidade > 1) {
+                return { ...p, quantidade: p.quantidade - 1 };
+            }
+            return p;
+        }));
+    };
+
     const renderProduto = ({ item }: { item: Produto }) => (
         <View style={styles.produtoItem}>
-            <Text style={styles.produtoNome}>{item.nome}</Text>
+            <View style={styles.produtoInfo}>
+                <Text style={styles.produtoNome}>{item.nome}</Text>
+                <View style={styles.quantidadeContainer}>
+                    <TouchableOpacity
+                        style={styles.botaoMenos}
+                        onPress={() => handleDecreaseQuantidade(item.id)}
+                    >
+                        <FontAwesome name="minus" size={14} color="#FAFAFA" />
+                    </TouchableOpacity>
+                    <Text style={styles.quantidadeTexto}>{item.quantidade}</Text>
+                    <TouchableOpacity
+                        style={styles.botaoMais}
+                        onPress={() => handleIncreaseQuantidade(item.id)}
+                    >
+                        <FontAwesome name="plus" size={14} color="#FAFAFA" />
+                    </TouchableOpacity>
+                </View>
+            </View>
             <View style={styles.acoesBotoes}>
                 <TouchableOpacity
                     style={styles.botaoEditar}
@@ -254,11 +288,42 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#E5E5E5',
     },
+    produtoInfo: {
+        flex: 1,
+        gap: 8,
+    },
     produtoNome: {
         fontSize: 16,
         color: '#171717',
         fontWeight: '500',
-        flex: 1,
+    },
+    quantidadeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    botaoMenos: {
+        backgroundColor: '#EF4444',
+        paddingHorizontal: 8,
+        paddingVertical: 6,
+        borderRadius: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    botaoMais: {
+        backgroundColor: '#10B981',
+        paddingHorizontal: 8,
+        paddingVertical: 6,
+        borderRadius: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    quantidadeTexto: {
+        fontSize: 14,
+        color: '#171717',
+        fontWeight: '600',
+        minWidth: 30,
+        textAlign: 'center',
     },
     acoesBotoes: {
         flexDirection: 'row',
