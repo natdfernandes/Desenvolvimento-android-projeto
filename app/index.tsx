@@ -33,7 +33,7 @@ export default function LoginScreen() {
             {/* Header Container */}
             <View style={styles.headerContainer}>
                 <ExpoImage
-                    source={require('../assets/images/logo.png')}
+                    source={require('../assets/Logotipo.svg')}
                     style={styles.logo}
                     contentFit="contain"
                 />
